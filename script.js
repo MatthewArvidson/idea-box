@@ -1,3 +1,4 @@
+//Pseudocode
 var submit = document.querySelector(".save-button");
 
 var sectionBottom = document.querySelector(".section-bottom")
