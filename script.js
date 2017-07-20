@@ -1,50 +1,34 @@
-//Pseudocode
+
 var submit = document.querySelector(".save-button");
 var sectionBottom = $(".section-bottom");
 var search = $(".search-engine")
-
-
-// submit.addEventListener("click", function(){
-//   event.preventDefault();
-//   var title = document.querySelector(".input-title").value;
-//   var body = document.querySelector(".input-body").value;
-//   console.log(body)
-//   var theIdea = new Card(title, body);
-//   idea(theIdea);
-// })
 
 submit.addEventListener("click", createIdea)
 
 $(document).ready(loadPage)
 
-//
-
 search.on("keydown", filterIdeas)
 
 
 function filterIdeas(){
+  console.log("filterIdeas");
   sectionBottom.html("")
-  var searchVal= $(this).val();
+  console.log(".html");
+  var searchVal= $(this).val().toUpperCase();
+  console.log("searchVal");
   var ideas = getFromLocal();
-  // console.log(searchVal);
-// console.log($(this).val())
+  console.log("getFromLocal");
   var filterIdeas = ideas.filter(function(idea, index){
-  // console.log(idea);
-  // console.log(index);
+    console.log("filterIdeas");
   return searchVal === idea.title || searchVal === idea.body
+  console.log("searchVal");
   })
  filterIdeas.forEach(function(idea){
+   console.log("filterIdeas");
    appendIdea(idea);
+   console.log("appendIdea");
  })
 }
-
-
-// function createCard(){
-//   event.preventDefault();
-
-//   var newCard = new Card(title.input, body.value);
-//   addCardToList(newCard);
-// }
 
 function Card(title, body){
   this.title = title;
@@ -66,58 +50,57 @@ $('.section-bottom').prepend(`
   </article>
 `)}
 
-sectionBottom.on("click", ".delete", function(){
-$(this).parent().remove()
-});
-
-//sectionBottom.on("click", ".delete", function(event){
-//$(event.target).parent().remove()
+$(".section-bottom").on("click", ".delete", function(){
+  var id = $(this).closest('article').prop('id');
+  localStorage.removeItem(id);
+  $(this).parent("article").remove();
+  });
 
 sectionBottom.on("click", ".up", function(){
-  var level = $(this).parent().find(".level").text();
-  if(level === "swill"){
-    $(this).parent().find(".level").text("plausible")
+  var id = $(this).closest('article').prop('id');
+  // console.log(id)
+  var ideaCard = getFromLocal(id);
+  // console.log(ideaCard)
+  if(ideaCard.quality === "swill"){
+    $(this).siblings('.level').text("plausible")
+    ideaCard.quality = "plausible";
   }
-  else if(level === "plausible"){
-    $(this).parent().find(".level").text("genius")
+  else if(ideaCard.quality === "plausible"){
+    $(this).siblings('.level').text("genius")
+    ideaCard.quality = "genius";
   }
+  saveToLocal(ideaCard);
   });
 
 sectionBottom.on("click", ".down", function(){
-  var level = $(this).parent().find(".level").text();
-  if(level === "genius"){
-    $(this).parent().find(".level").text("plausible")
+  var id = $(this).closest('article').prop('id');
+  console.log(id)
+  var ideaCard = getFromLocal(id);
+  console.log(ideaCard)
+  if(ideaCard.quality === "genius"){
+    $(this).siblings('.level').text("plausible")
+    ideaCard.quality = "plausible";
   }
-  else if(level === "plausible"){
-    $(this).parent().find(".level").text("swill")
+  else if(ideaCard.quality === "plausible"){
+    $(this).siblings('.level').text("swill")
+    ideaCard.quality = "swill";
   }
+  saveToLocal(ideaCard);
 });
 
-// function addCardToPage(cardCreate){
-//   var newArticle = document.createElement("li");
-//
-//   newArticle.innerHTML =  "<article class=\"container\">" +
-//                           "<h2 class=\"idea-title\">" + addToPage.title + "</h2>" +
-//                           "<hr class=\"line\">" +
-//                           "</article>";
-//   sectionBottom.appendChild(newArticle);
-// }
 function loadPage(){
   for (var i = 0; i < localStorage.length; i++) {
   appendIdea(JSON.parse(localStorage.getItem(localStorage.key(i))))
   }
 }
 
+function getFromLocal(id) {
+  var ideaCardGot = JSON.parse(localStorage.getItem(id));
+  return ideaCardGot
+}
 
 function saveToLocal(idea){
   localStorage.setItem(idea.id, JSON.stringify(idea))
-}
- function getFromLocal(){
- var ideas = [];
- for (var i = 0; i < localStorage.length; i++) {
- ideas.push(JSON.parse(localStorage.getItem(localStorage.key(i))))
- }
- return ideas
 }
 
 function createIdea(event){
@@ -127,5 +110,4 @@ function createIdea(event){
   var theIdea = new Card(title, body);
   appendIdea(theIdea);
   saveToLocal(theIdea);
-  //reset input fields
 }
