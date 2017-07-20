@@ -48,13 +48,6 @@ button{
   outline: none;
 }
 
-
-.logo2{
-  font: "Roboto Slab";
-  color: #6D6E71;
-  text-align: center;
-}
-
 input{
   display: block;
   margin-left: auto;
@@ -63,7 +56,12 @@ input{
   height: 28px;
   font-size: 120%;
   padding-left: 8px;
+}
 
+.logo2{
+  font: "Roboto Slab";
+  color: #6D6E71;
+  text-align: center;
 }
 
 .input-body{
@@ -89,18 +87,12 @@ input{
   cursor: pointer;
 }
 
-.section-bottom{
-}
-
 .search-engine{
   width: 40%;
   margin-left: auto;
   margin-right: auto;
   margin-top: 20px;
 }
-/*img{
-  width: 30px;
-}*/
 
 .delete{
   margin-left:;
@@ -159,12 +151,6 @@ input{
 .down:hover{
   background-image: url(Imagery/downvote-hover.svg);
 }
-
-.up, .down, .quality, .swell{
-  /*display: flex;
-  align-items: baseline;*/
-}
-
 
 .quality, .level{
   color: #6D6E71;
